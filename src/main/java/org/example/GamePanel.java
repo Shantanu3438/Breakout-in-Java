@@ -8,6 +8,8 @@ import java.awt.event.KeyListener;
 public class GamePanel extends JPanel implements Runnable {
     boolean leftPressed, rightPressed;
     int barX = 0, barY = 640, barWidth = 100, barHeight = 10;
+    int ballX = 200, ballY = 100, ballWidth = 15, ballHeight = 15;
+    int ballVelocityX = 5, ballVelocityY = 5;
     Thread gameThread;
     KeyListener gameKeyListener = new KeyListener() {
 
@@ -37,30 +39,51 @@ public class GamePanel extends JPanel implements Runnable {
         this.setFocusable(true);
     }
 
-    void paintRec(Graphics2D g2d) {
+    void paintBar(Graphics2D g2d) {
         g2d.setColor(Color.white);
         g2d.fillRect(barX, barY, barWidth, barHeight);
     }
 
-    void update() {
-        if (leftPressed)
+    void paintBall(Graphics2D g2d) {
+        g2d.setColor(Color.white);
+        g2d.fillOval(ballX, ballY, ballWidth, ballHeight);
+    }
+
+    void updateGameBar() {
+        if (leftPressed) {
             if (barX - 5 <= 0)
                 barX -= (barX - 5);
             else barX -= 5;
+        }
         if (rightPressed) {
-            System.out.println("barX: " + barX);
-            System.out.println("barWidth: " + (380 - barX));
-
             if (barX + 5 >= 380)
                 barX += (380 - barX);
             else barX += 5;
         }
     }
 
+    void updateGameBall() {
+        if (ballY == (barY - ballHeight) && ballX >= barX && ballX <= (barX + barWidth))
+            ballVelocityY = -ballVelocityY;
+        else if (ballY == 0)
+            ballVelocityY = -ballVelocityY;
+        else if (ballX == 0 || ballX == 470)
+            ballVelocityX = -ballVelocityX;
+
+        ballX += ballVelocityX;
+        ballY += ballVelocityY;
+    }
+
+    void update() {
+        updateGameBar();
+        updateGameBall();
+    }
+
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        paintRec(g2d);
+        paintBar(g2d);
+        paintBall(g2d);
         g2d.dispose();
     }
 
