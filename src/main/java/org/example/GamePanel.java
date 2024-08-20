@@ -7,9 +7,22 @@ import java.awt.event.KeyListener;
 
 public class GamePanel extends JPanel implements Runnable {
     boolean leftPressed, rightPressed;
+
+    int[][] bricks = new int[][] {
+            { 1, 1, 1, 1, 1 },
+            { 1, 1, 1, 1, 1 },
+            { 1, 1, 1, 1, 1 },
+            { 1, 1, 1, 1, 1 },
+            { 1, 1, 1, 1, 1 }
+    };
+
     int barX = 0, barY = 640, barWidth = 100, barHeight = 10;
     int ballX = 200, ballY = 100, ballWidth = 15, ballHeight = 15;
     int ballVelocityX = 5, ballVelocityY = 5;
+    int brickWidth = 80, brickHeight = 15;
+    int brickX = 0, brickY = 0;
+    int totalBricksX = bricks.length;
+    int totalBricksY = bricks[0].length;
     Thread gameThread;
     KeyListener gameKeyListener = new KeyListener() {
 
@@ -49,6 +62,19 @@ public class GamePanel extends JPanel implements Runnable {
         g2d.fillOval(ballX, ballY, ballWidth, ballHeight);
     }
 
+    void paintBricks(Graphics2D g2d) {
+        g2d.setColor(Color.white);
+        for(int i = 0; i < totalBricksX; i++) {
+            brickY = i * brickHeight + (i * 10) + 10;
+            for(int j = 0; j < totalBricksY; j++) {
+                brickX = j * brickWidth + (j * 10) + 25;
+                if(bricks[i][j] == 1) {
+                    g2d.fillRect(brickX, brickY, brickWidth, brickHeight);
+                }
+            }
+        }
+    }
+
     void updateGameBar() {
         if (leftPressed) {
             if (barX - 5 <= 0)
@@ -84,6 +110,7 @@ public class GamePanel extends JPanel implements Runnable {
         Graphics2D g2d = (Graphics2D) g;
         paintBar(g2d);
         paintBall(g2d);
+        paintBricks(g2d);
         g2d.dispose();
     }
 
