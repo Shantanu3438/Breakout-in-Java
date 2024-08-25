@@ -17,7 +17,7 @@ public class GamePanel extends JPanel implements Runnable {
     };
 
     int barX = 0, barY = 640, barWidth = 100, barHeight = 10;
-    int ballX = 200, ballY = 100, ballWidth = 15, ballHeight = 15;
+    int ballX = 200, ballY = 200, ballWidth = 15, ballHeight = 15;
     int ballVelocityX = 5, ballVelocityY = 5;
     int brickWidth = 80, brickHeight = 15;
     int brickX = 0, brickY = 0;
@@ -100,6 +100,29 @@ public class GamePanel extends JPanel implements Runnable {
         ballY += ballVelocityY;
     }
 
+    void checkCollisionAndPaintBricks(Graphics2D g2d) {
+        for(int i = 0; i < totalBricksX; i++) {
+            brickY = i * brickHeight + (i * 10) + 10;
+            for(int j = 0; j < totalBricksY; j++) {
+                brickX = j * brickWidth + (j * 10) + 25;
+                if(ballY < 150) {
+                    if(bricks[i][j] == 1) {
+                        if(ballY >= (i * brickHeight + (i * 10) + 10) &&
+                            ballY <= (i * brickHeight + (i * 10) + 10 + brickHeight) &&
+                            ballX >= (j * brickWidth + (j * 10) + 25) &&
+                            ballX <= (j * brickWidth + (j * 10) + 25 + brickWidth)) {
+                            bricks[i][j] = 0;
+                            ballVelocityY = -ballVelocityY;
+                        }
+                    }
+                }
+                if(bricks[i][j] == 1) {
+                    g2d.fillRect(brickX, brickY, brickWidth, brickHeight);
+                }
+            }
+        }
+    }
+
     void update() {
         updateGameBar();
         updateGameBall();
@@ -110,7 +133,7 @@ public class GamePanel extends JPanel implements Runnable {
         Graphics2D g2d = (Graphics2D) g;
         paintBar(g2d);
         paintBall(g2d);
-        paintBricks(g2d);
+        checkCollisionAndPaintBricks(g2d);
         g2d.dispose();
     }
 
