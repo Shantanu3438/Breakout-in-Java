@@ -1,21 +1,24 @@
 package org.example;
 
 import java.awt.*;
+import java.util.Random;
 
 public class Bar {
     int X, Y, width, height;
-    BarKeyHandler barKeyHandler = new BarKeyHandler();
+    KeyHandler keyHandler = KeyHandler.getInstance();
     private static Bar bar;
+    GameState gameState = GameState.getInstance();
 
     private Bar() {
-        X = 0;
+        Random gameRandom = new Random();
+        X = gameRandom.nextInt(80) * 5 + 10;
         Y = 640;
         width = 100;
         height = 10;
     }
 
     public static Bar getInstance() {
-        if(bar == null) {
+        if (bar == null) {
             bar = new Bar();
         }
         return bar;
@@ -27,15 +30,14 @@ public class Bar {
     }
 
     void updateGameBar() {
-        if (barKeyHandler.leftPressed) {
-            if (X - 5 <= 0)
-                X -= (X - 5);
-            else X -= 5;
-        }
-        if (barKeyHandler.rightPressed) {
-            if (X + 5 >= 380)
-                X += (380 - X);
-            else X += 5;
+        if (gameState.currentGameState == GameStates.RUNNING) {
+            if (keyHandler.leftKeyPressed && X > 0) {
+                X -= 5;
+            }
+
+            if (keyHandler.rightKeyPressed && X < 385) {
+                X += 5;
+            }
         }
     }
 }

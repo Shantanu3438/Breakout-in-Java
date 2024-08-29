@@ -4,21 +4,26 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GamePanel extends JPanel implements Runnable {
+    KeyHandler keyHandler = KeyHandler.getInstance();
     Bar bar = Bar.getInstance();
     Ball ball = Ball.getInstance();
+    GameState gameState = GameState.getInstance();
     Brick[] bricks = new Brick[25];
     Thread gameThread;
 
     GamePanel() {
         this.setBackground(Color.BLACK);
-        this.addKeyListener(bar.barKeyHandler);
+        this.addKeyListener(keyHandler);
         this.setFocusable(true);
-        for(int i = 0; i < bricks.length; i++) {
+        for (int i = 0; i < bricks.length; i++) {
             bricks[i] = new Brick(i/5, i%5);
         }
     }
 
     void update() {
+        if (gameState.currentGameState == GameStates.OPENED) {
+            changeGameStateToRunning();
+        }
         bar.updateGameBar();
         ball.updateGameBall();
     }
@@ -35,6 +40,12 @@ public class GamePanel extends JPanel implements Runnable {
         g2d.dispose();
     }
 
+    void changeGameStateToRunning() {
+        if (keyHandler.leftKeyPressed || keyHandler.rightKeyPressed) {
+            gameState.currentGameState = GameStates.RUNNING;
+        }
+    }
+
     public void startGameThread() {
         gameThread = new Thread(this);
         gameThread.start();
@@ -49,7 +60,7 @@ public class GamePanel extends JPanel implements Runnable {
             repaint();
             try {
                 double remainingTime = nextDrawTime - System.nanoTime();
-                if(remainingTime < 0)
+                if (remainingTime < 0)
                     remainingTime = 0;
                 remainingTime /= 1000000;
                 Thread.sleep((long) remainingTime);

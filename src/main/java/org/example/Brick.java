@@ -20,8 +20,8 @@ public class Brick {
     }
 
     public void checkCollisionWithBall() {
-        if(ball.Y < 150 && !isCollided) {
-            if(ball.Y >= Y && ball.Y <= Y + height && ball.X >= X && ball.X <= X + width) {
+        if (ball.Y < 150 && !isCollided) {
+            if (ball.Y >= Y && ball.Y <= Y + height && ball.X >= X && ball.X <= X + width) {
                 isCollided = true;
                 ball.velocityY = -ball.velocityY;
             }
@@ -29,7 +29,7 @@ public class Brick {
     }
 
     public void paintBrick(Graphics2D g2d) {
-        if(!isCollided)
+        if (!isCollided)
             g2d.fillRect(X, Y, width, height);
     }
 }
