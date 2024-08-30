@@ -21,16 +21,15 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     void update() {
-        bar.updateGameBar();
-        ball.updateGameBall();
-
+        bar.update();
+        ball.update();
     }
 
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        bar.paintBar(g2d);
-        ball.paintBall(g2d);
+        bar.paint(g2d);
+        ball.paint(g2d);
         for (Brick brick : bricks) {
             brick.checkCollisionWithBall();
             brick.paintBrick(g2d);

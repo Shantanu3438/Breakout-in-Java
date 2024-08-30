@@ -2,15 +2,13 @@ package org.example;
 
 import java.awt.*;
 
-public class Ball {
+public class Ball extends Entity implements EntityInterface {
     Bar bar = Bar.getInstance();
-    KeyHandler keyHandler = KeyHandler.getInstance();
-    GameState gameState = GameState.getInstance();
-    int X, Y, width, height;
     int velocityX, velocityY;
     private static Ball ball;
 
     private Ball() {
+        keyHandler = KeyHandler.getInstance();
         X = bar.X + 50;
         Y = 625;
         width = 15;
@@ -26,12 +24,12 @@ public class Ball {
         return ball;
     }
 
-    void paintBall(Graphics2D g2d) {
+    public void paint(Graphics2D g2d) {
         g2d.setColor(Color.white);
         g2d.fillOval(X, Y, width, height);
     }
 
-    void updateGameBall() {
+    public void update() {
         if (Y == (bar.Y - height) && X >= bar.X && X <= (bar.X + bar.width)) {
             if ((keyHandler.leftKeyPressed && velocityX > 0) || (keyHandler.rightKeyPressed && velocityX < 0)) {
                 velocityX = -velocityX;

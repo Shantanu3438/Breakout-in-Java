@@ -3,14 +3,13 @@ package org.example;
 import java.awt.*;
 import java.util.Random;
 
-public class Bar {
-    int X, Y, width, height;
-    KeyHandler keyHandler = KeyHandler.getInstance();
+public class Bar extends Entity implements EntityInterface {
+
     private static Bar bar;
-    GameState gameState = GameState.getInstance();
 
     private Bar() {
         Random gameRandom = new Random();
+        keyHandler = KeyHandler.getInstance();
         X = gameRandom.nextInt(80) * 5 + 10;
         Y = 640;
         width = 100;
@@ -24,12 +23,12 @@ public class Bar {
         return bar;
     }
 
-    void paintBar(Graphics2D g2d) {
+    public void paint(Graphics2D g2d) {
         g2d.setColor(Color.white);
         g2d.fillRect(X, Y, width, height);
     }
 
-    void updateGameBar() {
+    public void update() {
         if (keyHandler.leftKeyPressed && X > 0) {
             X -= 5;
         }
