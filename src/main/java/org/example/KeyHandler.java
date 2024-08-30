@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 public class KeyHandler implements KeyListener {
-    boolean leftKeyPressed, rightKeyPressed;
+    boolean leftKeyPressed, rightKeyPressed, escKeyPressed;
     public static KeyHandler keyHandler = null;
 
     public static KeyHandler getInstance() {
@@ -23,6 +23,8 @@ public class KeyHandler implements KeyListener {
             leftKeyPressed = true;
         if (e.getKeyCode() == KeyEvent.VK_RIGHT)
             rightKeyPressed = true;
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+            escKeyPressed = true;
     }
 
     @Override

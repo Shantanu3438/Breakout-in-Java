@@ -21,11 +21,9 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     void update() {
-        if (gameState.currentGameState == GameStates.OPENED) {
-            changeGameStateToRunning();
-        }
         bar.updateGameBar();
         ball.updateGameBall();
+
     }
 
     protected void paintComponent(Graphics g) {
@@ -40,9 +38,9 @@ public class GamePanel extends JPanel implements Runnable {
         g2d.dispose();
     }
 
-    void changeGameStateToRunning() {
+    void changeGameStateToStarted() {
         if (keyHandler.leftKeyPressed || keyHandler.rightKeyPressed) {
-            gameState.currentGameState = GameStates.RUNNING;
+            gameState.currentGameState = GameStates.STARTED;
         }
     }
 
@@ -56,8 +54,24 @@ public class GamePanel extends JPanel implements Runnable {
         double drawInterval = (double) 1000000000 / 60;
         double nextDrawTime = System.nanoTime() + drawInterval;
         while(gameThread != null) {
-            update();
-            repaint();
+            if (gameState.currentGameState == GameStates.RUNNING) {
+                changeGameStateToStarted();
+            }
+
+            if (gameState.currentGameState == GameStates.STARTED && keyHandler.escKeyPressed) {
+                gameState.currentGameState = GameStates.PAUSED;
+                keyHandler.escKeyPressed = false;
+            }
+
+            if (gameState.currentGameState == GameStates.PAUSED && keyHandler.escKeyPressed) {
+                gameState.currentGameState = GameStates.STARTED;
+                keyHandler.escKeyPressed = false;
+            }
+
+            if (gameState.currentGameState == GameStates.STARTED) {
+                update();
+                repaint();
+            }
             try {
                 double remainingTime = nextDrawTime - System.nanoTime();
                 if (remainingTime < 0)

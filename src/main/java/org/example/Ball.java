@@ -32,20 +32,18 @@ public class Ball {
     }
 
     void updateGameBall() {
-        if (gameState.currentGameState == GameStates.RUNNING) {
-            if (Y == (bar.Y - height) && X >= bar.X && X <= (bar.X + bar.width)) {
-                if ((keyHandler.leftKeyPressed && velocityX > 0) || (keyHandler.rightKeyPressed && velocityX < 0)) {
-                    velocityX = -velocityX;
-                }
-                    velocityY = -velocityY;
-            }
-            else if (Y == 0 || Y == 700)
-                velocityY = -velocityY;
-            else if (X == 0 || X == 470)
+        if (Y == (bar.Y - height) && X >= bar.X && X <= (bar.X + bar.width)) {
+            if ((keyHandler.leftKeyPressed && velocityX > 0) || (keyHandler.rightKeyPressed && velocityX < 0)) {
                 velocityX = -velocityX;
-
-            X += velocityX;
-            Y += velocityY;
+            }
+            velocityY = -velocityY;
         }
+        else if (Y == 0 || Y == 700)
+            velocityY = -velocityY;
+        else if (X == 0 || X == 470)
+            velocityX = -velocityX;
+
+        X += velocityX;
+        Y += velocityY;
     }
 }

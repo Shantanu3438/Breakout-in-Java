@@ -1,8 +1,8 @@
 package org.example;
 
 enum GameStates {
-    OPENED,
     RUNNING,
+    STARTED,
     PAUSED,
     GAME_OVER
 }
@@ -13,7 +13,7 @@ public class GameState {
     public static GameState gameState = null;
 
     GameState() {
-        currentGameState = GameStates.OPENED;
+        currentGameState = GameStates.RUNNING;
     }
 
     public static GameState getInstance() {

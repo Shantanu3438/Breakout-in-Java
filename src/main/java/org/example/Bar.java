@@ -30,14 +30,12 @@ public class Bar {
     }
 
     void updateGameBar() {
-        if (gameState.currentGameState == GameStates.RUNNING) {
-            if (keyHandler.leftKeyPressed && X > 0) {
-                X -= 5;
-            }
+        if (keyHandler.leftKeyPressed && X > 0) {
+            X -= 5;
+        }
 
-            if (keyHandler.rightKeyPressed && X < 385) {
-                X += 5;
-            }
+        if (keyHandler.rightKeyPressed && X < 385) {
+            X += 5;
         }
     }
 }
